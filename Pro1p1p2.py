@@ -9,3 +9,21 @@ from sklearn.neighbors import KNeighborsClassifier
 import matplotlib.pyplot as plt 
 
 
+def main():
+    
+    # reading file
+    training = r'C:\Users\SANG\Downloads\Testing dataset.xlsx'
+    train = pd.read_excel(training)
+    
+    testing = r'C:\Users\SANG\Downloads\Training dataset.xlsx'
+    test = pd.read_excel(testing)
+    
+    
+    
+    
+    
+    
+    
+    
+if __name__ == "__main__":
+        main()
