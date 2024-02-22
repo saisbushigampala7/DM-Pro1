@@ -19,7 +19,7 @@ testing = r"C:\Users\ssbus\Downloads\Testing dataset.xlsx"
 test = pd.read_excel(testing)
 
 
-X=train.iloc[0].iloc[0]
+X=train.iloc[:,2:]
     
 y=train.iloc[:,1]
 
