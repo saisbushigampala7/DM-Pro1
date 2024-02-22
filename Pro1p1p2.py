@@ -3,6 +3,7 @@
 # https://www.geeksforgeeks.org/ml-implementation-of-knn-classifier-using-sklearn/
 #https://www.activestate.com/resources/quick-reads/how-to-access-a-column-in-a-dataframe-using-pandas/#:~:text=You%20can%20use%20the%20loc,Let's%20see%20how.&text=If%20we%20wanted%20to%20access,in%20order%20to%20retrieve%20it.
 #https://sparkbyexamples.com/pandas/how-to-split-pandas-dataframe/
+#https://stackoverflow.com/questions/77615883/attributeerror-flags-object-has-no-attribute-c-contiguous
 
 import numpy as np 
 import pandas as pd 
