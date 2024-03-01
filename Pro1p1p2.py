@@ -1,15 +1,11 @@
 # Sai Bushigampala
 # Data Mining Pro 1 - P1 and P2
-# https://www.geeksforgeeks.org/ml-implementation-of-knn-classifier-using-sklearn/
-#https://www.activestate.com/resources/quick-reads/how-to-access-a-column-in-a-dataframe-using-pandas/#:~:text=You%20can%20use%20the%20loc,Let's%20see%20how.&text=If%20we%20wanted%20to%20access,in%20order%20to%20retrieve%20it.
-#https://sparkbyexamples.com/pandas/how-to-split-pandas-dataframe/
-#https://stackoverflow.com/questions/77615883/attributeerror-flags-object-has-no-attribute-c-contiguous
 
 import numpy as np 
 import pandas as pd 
-from sklearn.model_selection import train_test_split 
-from sklearn.neighbors import KNeighborsClassifier 
 import matplotlib.pyplot as plt 
+from math import sqrt
+from collections import Counter
 
     
 # reading file
@@ -22,60 +18,67 @@ test = pd.read_excel(testing)
 #Training Set--------------------------------------------------------------------
 
 #Split Training Data - Part 1
-X=train.iloc[:,2:]
+X_train = train.iloc[:,2:]
+Y_train = train.iloc[:,1]
+
+X_test = test.iloc[:,2:]
+Y_test = test.iloc[:,1]
+
+#print(X.iloc[0].iloc[1]) - Row Value 0 column 1
+
+#print(X.iloc[0,1]) - print value of row 0 column 1
+
+Y_test_pred = []
+k = 0
+
+def pred(k, sort_keys):
+    pos = 0
+    neg = 0
+    for i in range(0,k):
+        if(Y_train[sort_keys[i]] == 1):
+            pos += 1
+        elif(Y_train[sort_keys[i]] == 0):
+            neg += 1
+    if(pos > neg):
+        return 1
+    elif(neg > pos):
+        return 0
     
-y=train.iloc[:,1]
+def KNN(k):
+    for i in range(0, 19):
+        p = 0
+        q = 0
+        r = 0
+        jac_co = {}
+        for j in range(0,180):
+            for m in range(0,305):
+                if(X_test.iloc[i, m] == 1 and X_train.iloc[j, m] == 1):
+                    p += 1
+                elif(X_test.iloc[i, m] == 0 and X_train.iloc[j, m] == 1):
+                    q += 1
+                elif(X_test.iloc[i, m] == 1 and X_train.iloc[j, m] == 0):
+                    r +=1
+            jac_co[j] = p/(p + q + r)        
+        sort_list = dict(sorted(jac_co.items(), key=lambda x:x[1], reverse=True))
+        sort_keys = list(sort_list.keys())
+        Y_test_pred.append(pred(k, sort_keys))
+    return Y_test_pred    
 
-#Splitting Training Data into training and testing data
-X_train, X_test, Y_train, Y_test = train_test_split(X, y, train_size=0.8, test_size=0.2)
-
-#KNN with k=5 (Using Training Data to train model)
-neigh2 = KNeighborsClassifier(n_neighbors=5)
-neigh2.fit(X_train, Y_train.values.ravel())
-Y_train_pred = neigh2.predict(X_train)
-
-
-#Counting Correct and Incorrect Predictions - iterating over 40 wines - Part 2
-right = 0
+right = 0;
 wrong = 0
 
-for i in range(0, 40):
-    if((Y_train_pred[i]) == (Y_test.iloc[i])):
-      right = right + 1
-    else:
-      wrong = wrong + 1
+k_fold = 7
 
-print("\n----------Training DataSet-----------")
-print("\n Wrong Class Predictions for Traning Set: ", wrong)
-print("\n Right Class Predictions for Training Set: ", right)
-print("\n# of right Predictions/# of total predictions (in this case, only 40 predictions): Part 2 Calc:", right/40)
-
-#Testing Set---------------------------------------------------------------------
-
-#Split Testing Data - Part 1
-X=test.iloc[:,2:]
-    
-y=test.iloc[:,1]
-
-#KNN with k=5 (Using Training Data to train model)
-neigh2 = KNeighborsClassifier(n_neighbors=5)
-neigh2.fit(X, y)
-Y_pred = neigh2.predict(X)
-
-
-#Counting Correct and Incorrect Predictions - iterating over 40 wines - Part 2
-right = 0
-wrong = 0
-
+Y_test_pred = KNN(k_fold)
 for i in range(0, 19):
-    if((Y_pred[i]) == (y.iloc[i])):
-      right = right + 1
+    if((Y_test_pred[i]) == (Y_test.iloc[i])):
+        right = right + 1
     else:
-      wrong = wrong + 1
+        wrong = wrong + 1
 
-print("\n----------Testing DataSet-----------")
-print("\n Wrong Class Predictions for Testing Set: ", wrong)
-print("\n Right Class Predictions for Testing Set: ", right)
+print("\nKNN with k =", k_fold)
+print("\n Incorrectly Predicted Wine: ", wrong)
+print("\n Correctly Predicted Wine: ", right)
 print("\n# of right Predictions/# of total predictions (in this case, only 19 predictions): Part 2 Calc:", right/19)
-    
 
+#
