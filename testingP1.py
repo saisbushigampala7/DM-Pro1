@@ -1,3 +1,5 @@
+#https://medium.com/analytics-vidhya/implementing-k-nearest-neighbours-knn-without-using-scikit-learn-3905b4decc3c
+
 import numpy as np 
 import pandas as pd 
 import matplotlib.pyplot as plt 
