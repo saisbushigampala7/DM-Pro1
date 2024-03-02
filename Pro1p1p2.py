@@ -37,12 +37,12 @@ def pred(k, sort_keys):
     for i in range(0,k):
         if(Y_train[sort_keys[i]] == 1):
             pos += 1
-        elif(Y_train[sort_keys[i]] == 0):
+        elif(Y_train[sort_keys[i]] == -1):
             neg += 1
     if(pos > neg):
         return 1
     elif(neg > pos):
-        return 0
+        return -1
     
 def KNN(k):
     for i in range(0, 19):
@@ -67,7 +67,7 @@ def KNN(k):
 right = 0;
 wrong = 0
 
-k_fold = 7
+k_fold = 13
 
 Y_test_pred = KNN(k_fold)
 for i in range(0, 19):
